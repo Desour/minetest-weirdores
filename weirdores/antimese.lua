@@ -83,15 +83,15 @@ minetest.register_abm({
 			for y = pos.y-r, pos.y+r, 1 do
 				for z = pos.z-r, pos.z+r, 1 do
 					local cpos = {x=x,y=y,z=z}
-					if minetest.env:get_node(cpos).name == "weirdores:rubyblock" then
-						local e = minetest.env:add_item(cpos,{name="weirdores:antimese"})
+					if minetest.get_node(cpos).name == "weirdores:rubyblock" then
+						local e = minetest.add_item(cpos,{name="weirdores:antimese"})
 						e:setvelocity({x=0,y=10,z=0})
 					end
 					-- The commented part allows to randomly destroy nodes around
 					if --[[math.random(0,1) == 1
-					or]] minetest.env:get_node(cpos).name == "weirdores:rubyblock"
-					or minetest.env:get_node(cpos).name == "default:mese" then
-						minetest.env:remove_node(cpos)
+					or]] minetest.get_node(cpos).name == "weirdores:rubyblock"
+					or minetest.get_node(cpos).name == "default:mese" then
+						minetest.remove_node(cpos)
 					end
 				end
 			end

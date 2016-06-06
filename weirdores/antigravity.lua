@@ -46,27 +46,39 @@ minetest.register_globalstep(function(dtime)
 	end
 end)
 
+vector.zero = vector.zero or {x=0,y=0,z=0}
+local spawnerdef = {
+	amount = 100,
+	time = 10,
+	minpos = {},
+	maxpos = {},
+	minvel = {x=0,y=20,z=0},
+	minacc = vector.zero,
+	minexptime = 10,
+	maxexptime = 10,
+	minsize = 0.1,
+	maxsize = 1,
+	collisiondetection = false,
+	texture = "weirdores_particle_mese.png",
+}
+spawnerdef.maxvel = spawnerdef.minvel
+spawnerdef.maxacc = spawnerdef.minacc
+
 minetest.register_abm({
 	nodenames={"weirdores:antigravity"},
 	interval = 5,
 	chance = 1,
 	action = function(pos, node)
-		minpos = {}
-		minpos.x = pos.x - .5
-		minpos.y = pos.y
-		minpos.z = pos.z - .5
-		maxpos = {}
-		maxpos.x = pos.x + .5
-		maxpos.y = pos.y
-		maxpos.z = pos.z + .5
-		minetest.add_particlespawner(100,10,
-			minpos, maxpos,
-			{x=0,y=20,z=0}, {x=0,y=20,z=0},
-			{x=0,y=0,z=0}, {x=0,y=0,z=0},
-			10, 10,
-			.1, 1,
-			false, "weirdores_particle_mese.png")
-			
+		spawnerdef.minpos.x = pos.x - .5
+		spawnerdef.minpos.y = pos.y
+		spawnerdef.minpos.z = pos.z - .5
+
+		spawnerdef.maxpos.x = pos.x + .5
+		spawnerdef.maxpos.y = pos.y
+		spawnerdef.maxpos.z = pos.z + .5
+
+		minetest.add_particlespawner(spawnerdef)
+
 		if not is_antigravity({x=pos.x, y=pos.y+1, z=pos.z}) then
 			table.insert(antigravities,pos)
 		end
